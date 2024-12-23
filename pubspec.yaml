@@ -1,4 +1,4 @@
-name: flutter_projects
+name: first_stuff
 description: "A new Flutter project."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
@@ -11,6 +11,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  firebase_core: ^2.16.0
+
+  bloc:
+  flutter_bloc:
+  equatable:
+
+  user_repository:
+    path: packages/user_repository
 
 
   cupertino_icons: ^1.0.8
