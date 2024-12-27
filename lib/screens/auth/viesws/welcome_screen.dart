@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../blocs/authentication_bloc/authentication_bloc.dart';
 import '../blocs/sign_up_bloc/sign_up_bloc.dart';
 import 'sign_in_screen.dart';
+import 'sign_up_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
@@ -67,7 +68,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                             Padding(
                               padding: EdgeInsets.all(12.0),
                               child: Text(
-                                'Sign In',
+                                'Sign Up',
                                 style: TextStyle(
                                   fontSize: 22,
                                 ),
@@ -78,7 +79,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                               child: Text(
                                 'Sign Up',
                                 style: TextStyle(
-                                  fontSize: 22,
+                                  fontSize: 18,
                                 ),
                               ),
                             ),
@@ -99,7 +100,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                                 create: (context) => SignUpBloc(
                                     context.read<AuthenticationBloc>().userRepository
                                 ),
-                               // child: const SignUpScreen(),
+                                child: const SignUpScreen(),
                               ),
                             ],
                           )

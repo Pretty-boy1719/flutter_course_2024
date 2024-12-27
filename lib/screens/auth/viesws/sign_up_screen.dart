@@ -17,7 +17,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final emailController = TextEditingController();
   final nameController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  IconData iconPassword = CupertinoIcons.eye_fill;
   bool obscurePassword = true;
   bool signUpRequired = false;
 
@@ -26,21 +25,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
   IconData iconEmail = Icons.email;
   IconData iconEye = Icons.remove_red_eye;
   IconData iconEyeEmpty = Icons.remove_red_eye_outlined;
-  IconData iconPerson = Icons.person;
+
+
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<SignUpBloc, SignUpState>(
       listener: (context, state) {
-        if (state is SignUpSuccess) {
+        if(state is SignUpSuccess) {
           setState(() {
             signUpRequired = false;
           });
-        } else if (state is SignUpProcess) {
+        } else if(state is SignUpProcess) {
           setState(() {
             signUpRequired = true;
           });
-        } else if (state is SignUpFailure) {
+        } else if(state is SignUpFailure) {
           return;
         }
       },
@@ -50,27 +50,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
           child: Column(
             children: [
               const SizedBox(height: 20),
-              //Email
               SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  child: TemplateTextField(
-                      controller: emailController,
-                      hintText: 'Email',
-                      obscureText: false,
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return 'Please fill in this field';
-                        } else if (!RegExp(r'^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$')
-                            .hasMatch(val)) {
-                          return 'Please enter a valid email';
-                        }
-                        return null;
-                      })),
+                width: MediaQuery.of(context).size.width * 0.9,
+                child: TemplateTextField(
+                    controller: emailController,
+                    hintText: 'Email',
+                    obscureText: false,
+                    keyboardType: TextInputType.emailAddress,
+                    prefixIcon: const Icon(Icons.email),
+                    validator: (val) {
+                      if(val!.isEmpty) {
+                        return 'Please fill in this field';
+                      } else if(!RegExp(r'^[\w-\.]+@([\w-]+.)+[\w-]{2,4}$').hasMatch(val)) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
+                    }
+                ),
+              ),
               const SizedBox(height: 10),
-              //input password
-              const SizedBox(height: 10),
-              //Password
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: TemplateTextField(
@@ -78,7 +76,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hintText: 'Password',
                     obscureText: obscurePassword,
                     keyboardType: TextInputType.visiblePassword,
-                    prefixIcon: Icon(iconPasswordPrefix),
+                    prefixIcon: const Icon(Icons.password_outlined),
                     suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
@@ -93,18 +91,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       icon: Icon(iconPasswordSufix),
                     ),
                     validator: (val) {
-                      if (val!.isEmpty) {
+                      if(val!.isEmpty) {
                         return 'Please fill in this field';
-                      } else if (!RegExp(
-                              r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$')
-                          .hasMatch(val)) {
+                      } else if(!RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~`)\%\-(_+=;:,.<>/?"[{\]}\|^]).{8,}$').hasMatch(val)) {
                         return 'Please enter a valid password';
                       }
                       return null;
-                    }),
+                    }
+                ),
               ),
               const SizedBox(height: 10),
-              //Name of person
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 child: TemplateTextField(
@@ -112,53 +108,60 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hintText: 'Name',
                     obscureText: false,
                     keyboardType: TextInputType.name,
-                    prefixIcon: Icon(iconPerson),
+                    prefixIcon: const Icon(Icons.person),
                     validator: (val) {
-                      if (val!.isEmpty) {
+                      if(val!.isEmpty) {
                         return 'Please fill in this field';
-                      } else if (val.length > 30) {
+                      } else if(val.length > 30) {
                         return 'Name too long';
                       }
                       return null;
-                    }),
+                    }
+                ),
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               !signUpRequired
                   ? SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: TextButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              MyUser myUser = MyUser.empty;
-                              myUser.email = emailController.text;
-                              myUser.name = nameController.text;
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: TextButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        MyUser myUser = MyUser.empty;
+                        myUser.email = emailController.text;
+                        myUser.name = nameController.text;
 
-                              setState(() {
-                                context.read<SignUpBloc>().add(SignUpRequired(
-                                    myUser, passwordController.text));
-                              });
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                              elevation: 3.0,
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(60))),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 5),
-                            child: Text(
-                              'Sign Up',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          )),
+                        setState(() {
+                          context.read<SignUpBloc>().add(
+                              SignUpRequired(
+                                  myUser,
+                                  passwordController.text
+                              )
+                          );
+                        });
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                        elevation: 3.0,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(60)
+                        )
+                    ),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                      child: Text(
+                        'Sign Up',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600
+                        ),
+                      ),
                     )
+                ),
+              )
                   : const CircularProgressIndicator()
             ],
           ),
