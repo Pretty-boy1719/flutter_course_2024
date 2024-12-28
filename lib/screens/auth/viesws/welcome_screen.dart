@@ -37,6 +37,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
           height: MediaQuery.of(context).size.height,
           child: Stack(
             children: [
+              // circle of light
               Align(
                 alignment: const AlignmentDirectional(20, 1.8),
                 child: Container(
@@ -52,6 +53,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> with TickerProviderStateM
                 filter: ImageFilter.blur(sigmaX: 100.0, sigmaY: 100.0),
                 child: Container(),
               ),
+              // TabBar of choosing slides
               Align(
                 alignment: Alignment.center,
                 child: SizedBox(
