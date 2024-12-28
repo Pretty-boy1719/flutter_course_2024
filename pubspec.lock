@@ -81,6 +81,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.18.0"
+  course_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/course_repository"
+      relative: true
+    source: path
+    version: "0.0.1"
   cupertino_icons:
     dependency: "direct main"
     description:

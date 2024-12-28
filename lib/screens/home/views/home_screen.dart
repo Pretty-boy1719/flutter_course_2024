@@ -1,4 +1,5 @@
 import 'package:first_stuff/screens/auth/blocs/sign_in_bloc/sign_in_bloc.dart';
+import 'package:first_stuff/screens/home/blocs/get_courses_bloc/get_courses_bloc.dart';
 import 'package:first_stuff/screens/home/views/details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,14 +41,17 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        child: BlocBuilder<GetCoursesBloc, GetCoursesState>(
+  builder: (context, state) {
+    if (state is GetCoursesSuccess){
+      return GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: 16,
             mainAxisSpacing: 16,
             childAspectRatio: 16/9
           ),
-          itemCount: 8,
+          itemCount: state.courses.length,
           itemBuilder: (context, int i){
             return Material(
               elevation: 3,
@@ -61,7 +65,9 @@ class HomeScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute<void>(
-                      builder: (BuildContext context) => const DetailsScreen(),
+                      builder: (BuildContext context) => DetailsScreen(
+                        state.courses[i]
+                      ),
                     ),
                   );
                 },
@@ -70,17 +76,17 @@ class HomeScreen extends StatelessWidget {
                   Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top:5, left: 10),
-                        child: Image.asset(
-                          'assets/images/courses_1.jpg',
-                          scale: 8,
+                        padding: const EdgeInsets.only(top:5, left: 4),
+                        child: Image.network(
+                          state.courses[i].picture,
+                          scale: 10,
                         ),
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10),
+                      Padding(
+                        padding: EdgeInsets.only(left: 5),
                         child: Text(
-                          "Chicken Business",
-                          style: TextStyle(
+                          state.courses[i].name,
+                          style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold
                           ) ,
@@ -89,10 +95,10 @@ class HomeScreen extends StatelessWidget {
 
                     ],
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 1),
                   Column(
                     children: [
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Container(
                         decoration: BoxDecoration(
                           color: Colors.green.shade400,
@@ -100,11 +106,11 @@ class HomeScreen extends StatelessWidget {
                         ),
                         height: 25,
                         width: 45,
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 5),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
                           child: Text(
-                            "Free",
-                            style: TextStyle(
+                            state.courses[i].isFree ? "Free" : "${state.courses[i].price}\$",
+                            style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w900,
                               fontSize: 15
@@ -120,11 +126,11 @@ class HomeScreen extends StatelessWidget {
                           ),
                           height: 25,
                           width: 45,
-                          child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 5),
+                          child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal:0),
                               child: Text(
-                                "New",
-                                style: TextStyle(
+                                state.courses[i].isNew ? "New" : "Pop",
+                                style: const TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 15
@@ -148,7 +154,20 @@ class HomeScreen extends StatelessWidget {
               )
             );
           },
+        );
+    } else if (state is GetCoursesProcess){
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return const Center(
+        child: Text(
+          "An Error occured..."
         )
+      );
+    }
+  }
+)
       )
     );
   }

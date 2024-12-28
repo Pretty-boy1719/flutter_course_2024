@@ -1,6 +1,8 @@
+import 'package:course_repository/course_repository.dart';
 import 'package:first_stuff/blocs/authentication_bloc/authentication_bloc.dart';
 import 'package:first_stuff/screens/auth/blocs/sign_in_bloc/sign_in_bloc.dart';
 import 'package:first_stuff/screens/auth/viesws/welcome_screen.dart';
+import 'package:first_stuff/screens/home/blocs/get_courses_bloc/get_courses_bloc.dart';
 import 'package:first_stuff/screens/home/views/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,11 +26,20 @@ class MyAppView extends StatelessWidget {
         home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           builder: ((context, state) {
             if(state.status == AuthenticationStatus.authenticated){
-              return BlocProvider(
-                 create: (context) => SignInBloc(
-                    context.read<AuthenticationBloc>().userRepository
+              return MultiBlocProvider(
+                providers: [
+                  BlocProvider(
+                      create: (context) => SignInBloc(
+                          context.read<AuthenticationBloc>().userRepository
+                      )
                   ),
-                  child: const HomeScreen(),
+                  BlocProvider(
+                      create: (context) => GetCoursesBloc(
+                        FirebaseCourseRepo()
+                      )..add(GetCourses()),
+                  )
+                ],
+                child: const HomeScreen(),
               );
            } else{
             return const WelcomeScreen();

@@ -5,7 +5,7 @@ class CourseEntity {
   bool isNew;
   String name;
   String description;
-  double price;
+  int price;
 
   CourseEntity({
     required this.courseId,

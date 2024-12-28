@@ -1,4 +1,4 @@
-import 'package:courses_repository/src/entities/course_entities.dart';
+import 'package:course_repository/src/entities/course_entities.dart';
 
 class Course{
   String courseId;
@@ -7,7 +7,7 @@ class Course{
   bool isNew;
   String name;
   String description;
-  double price;
+  int price;
 
   Course({
     required this.courseId,

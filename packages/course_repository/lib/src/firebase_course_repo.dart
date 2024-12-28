@@ -1,12 +1,12 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:courses_repository/course_repository.dart';
-import 'package:courses_repository/src/models/course.dart';
+import 'package:course_repository/course_repository.dart';
 
 class FirebaseCourseRepo implements CourseRepo{
   final courseCollection = FirebaseFirestore.instance.collection('courses');
 
+  @override
   Future<List<Course>> getCourses() async {
     try{
       return await courseCollection
