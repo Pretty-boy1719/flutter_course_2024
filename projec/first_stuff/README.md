@@ -1,16 +1,32 @@
-# flutter_projects
+# README для Flutter проекта
 
-A new Flutter project.
+## Описание проекта
+Этот Flutter проект представляет собой мобильное приложение с функцией аутентификации, навигацией по домашнему экрану и интеграцией с Firebase для управления пользователями и курсами. Архитектура проекта построена на паттерне BLoC (Business Logic Component), что способствует разделению логики и представления, делая приложение масштабируемым и легко поддерживаемым.
 
-## Getting Started
+## Основные функции
+- Аутентификация пользователей (вход/регистрация)
+- Главный экран с каталогом курсов
+- Подробное представление курсов
+- Управление состоянием с использованием BLoC
+- Модульная структура репозиториев для работы с данными пользователей и курсов
 
-This project is a starting point for a Flutter application.
+## Структура проекта
+```
+lib/
+|-- main.dart                    # Точка входа в приложение
+|-- app.dart                     # Конфигурация приложения
+|-- app_view.dart                # Основное представление приложения
+|-- simple_bloc_observer.dart    # Наблюдатель за BLoC для отладки
+|-- blocs/
+|   |-- authentication_bloc/     # Файлы BLoC для аутентификации
+|-- components/
+|   |-- template_text_field.dart # Повторно используемый компонент текстового поля
+|-- screens/
+|   |-- auth/                    # Экраны аутентификации и BLoC
+|   |-- home/                    # Главный экран и детали
+packages/
+|-- course_repository/           # Логика работы с данными курсов
+|-- user_repository/             # Логика работы с данными пользователей
+```
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
